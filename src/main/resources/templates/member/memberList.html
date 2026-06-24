@@ -33,8 +33,8 @@
                     const tr = document.createElement('tr');
                     tr.innerHTML = `
                         <td>${member.id}</td>
-                        <td>${member.memberEmail}</td>
-                        <td>${member.memberName}</td>
+                        <td>${member.userEmail}</td>
+                        <td>${member.userName}</td>
                         <td><a href="/detail.html?id=${member.id}">상세/수정</a></td>
                     `;
                     tbody.appendChild(tr);
