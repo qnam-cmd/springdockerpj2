@@ -3,14 +3,14 @@ version: '3.8'
 services:
   mysql:
     image: mysql:8
-    container_name: mysql-app2
+    container_name: mysql
     environment:
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
       MYSQL_DATABASE: backprojectdb
     ports:
       - "3308:3306"
     volumes:
-      - mysql-data-app2:/var/lib/mysql
+      - mysql-data:/var/lib/mysql
     networks:
       - spring-network
     healthcheck:
@@ -18,6 +18,7 @@ services:
       interval: 5s
       timeout: 5s
       retries: 5
+
 
   springdockerpj2:
     image: ${DOCKERHUB_USERNAME}/springdockerpj2:latest
@@ -28,13 +29,16 @@ services:
     networks:
       - spring-network
     environment:
-      - SPRING_DATASOURCE_URL=jdbc:mysql://mysql-app2:3306/backprojectdb?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC
+      - SPRING_DATASOURCE_URL=jdbc:mysql://mysql:3306/backprojectdb?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC
       - SPRING_DATASOURCE_USERNAME=root
       - SPRING_DATASOURCE_PASSWORD=${SPRING_DATASOURCE_PASSWORD}
+    depends_on:
+      mysql:
+        condition: service_healthy
 
 networks:
   spring-network:
     name: spring-network
     external: true
 volumes:
-  mysql-data-app2:
+  mysql-data:
