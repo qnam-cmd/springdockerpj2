@@ -21,7 +21,7 @@ const joinFn = async () => {
         alert('회원가입 완료');
 
         // 회원목록으로 이동
-        location.href = "/member/memberList";
+        location.href = "/memberList.html";
 
     } catch (error) {
 

@@ -1,37 +1,43 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ko">
 <head>
     <meta charset="UTF-8">
-    <title>Join</title>
+    <title>회원 가입</title>
 </head>
 <body>
-<div class="join">
-    <div class="join-con">
-        <h1>회원가입</h1>
-        <form id="joinForm">
-            <div>
-                <label for="userEmail">이메일</label>
-                <input type="email" id="userEmail" name="userEmail" placeholder="이메일">
-            </div>
-            <div>
-                <label for="userName">이름</label>
-                <input type="text" id="userName" name="userName" placeholder="이름">
-            </div>
-            <div>
-                <label for="userPw">비밀번호</label>
-                <input type="password" id="userPw" name="userPw" placeholder="비밀번호">
-            </div>
-            <div>
-                <button type="button" onclick="joinFn()">회원가입</button>
-            </div>
+<h2>회원 가입</h2>
+<form id="joinForm">
+    <label>이메일: <input type="text" name="memberEmail"></label><br>
+    <label>비밀번호: <input type="password" name="memberPassword"></label><br>
+    <label>이름: <input type="text" name="memberName"></label><br>
+    <button type="button" onclick="joinMember()">가입하기</button>
+</form>
 
-        </form>
+<script>
+    function joinMember() {
+        const form = document.getElementById('joinForm');
+        // form 안의 데이터를 FormData 객체로 묶습니다.
+        const formData = new FormData(form);
 
-
-        <script src="/js/member/join.js"></script>
-
-    </div>
-</div>
-
+        fetch('/api/member/join', {
+            method: 'POST',
+            // @ModelAttribute가 받을 수 있도록 FormData를 그대로 전송합니다.
+            body: formData
+        })
+            .then(response => {
+                if (response.ok) return response.json();
+                throw new Error("가입 실패");
+            })
+            .then(data => {
+                // 서버에서 넘겨준 Map의 "result" 키를 확인합니다.
+                console.log(data.result);
+                alert('회원가입이 완료되었습니다.');
+                location.href = '/memberList.html'; // 목록 페이지로 이동
+            })
+            .catch(error => {
+                alert(error.message);
+            });
+    }
+</script>
 </body>
 </html>

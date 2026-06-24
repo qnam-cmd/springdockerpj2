@@ -1,10 +1,47 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ko">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>회원 목록</title>
 </head>
 <body>
+<h2>회원 목록</h2>
+<table border="1">
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>이메일</th>
+        <th>이름</th>
+        <th>상세보기</th>
+    </tr>
+    </thead>
+    <tbody id="memberTableBody">
+    </tbody>
+</table>
 
+<script>
+    // 페이지가 로드되면 자동으로 실행됩니다.
+    window.onload = function() {
+        fetch('/api/member/memberList')
+            .then(response => response.json())
+            .then(data => {
+                const tbody = document.getElementById('memberTableBody');
+                const memberList = data.result; // List<MemberDto> 객체
+
+                // 데이터 개수만큼 반복하며 <tr> 태그를 생성합니다.
+                memberList.forEach(member => {
+                    const tr = document.createElement('tr');
+                    tr.innerHTML = `
+                        <td>${member.id}</td>
+                        <td>${member.memberEmail}</td>
+                        <td>${member.memberName}</td>
+                        <td><a href="/detail.html?id=${member.id}">상세/수정</a></td>
+                    `;
+                    tbody.appendChild(tr);
+                });
+            })
+            .catch(error => console.error("데이터 로드 에러:", error));
+    };
+</script>
 </body>
 </html>

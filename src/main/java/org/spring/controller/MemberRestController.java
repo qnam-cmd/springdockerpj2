@@ -52,26 +52,23 @@ public class MemberRestController {
         return ResponseEntity.status(HttpStatus.OK).body(map);
     }
 
+    //======================  회원 (상세)목록  ======================//
+    @GetMapping("/detail/{id}")
+    public ResponseEntity<?> detail(@PathVariable("id") Long id) {
+        MemberDto memberDto = memberService.memberDetail(id);
+        Map<String, MemberDto> map = new HashMap<>();
+        map.put("result", memberDto);
 
-//    //=========================== Controller의 구현해둠 (화면이동) ============================//
+        return ResponseEntity.status(HttpStatus.OK).body(map);
+    }
 
-//    //======================  회원 (상세)목록  ======================//
-//    @GetMapping("/detail/{id}")
-//    public ResponseEntity<?> detail(@PathVariable("id") Long id) {
-//        MemberDto memberDto = memberService.memberDetail(id);
-//        Map<String, MemberDto> map = new HashMap<>();
-//        map.put("result", memberDto);
-//
-//        return ResponseEntity.status(HttpStatus.OK).body(map);
-//    }
-//
-//    //======================  회원 (전체)목록  ======================//
-//    @GetMapping("/memberList")
-//    public ResponseEntity<?> memberList() {
-//        Map<String, List<MemberDto>> map = new HashMap<>();
-//        List<MemberDto> memberList = memberService.memberList();
-//        map.put("result", memberList);
-//
-//        return ResponseEntity.status(HttpStatus.OK).body(map);
-//    }
+    //======================  회원 (전체)목록  ======================//
+    @GetMapping("/memberList")
+    public ResponseEntity<?> memberList() {
+        Map<String, List<MemberDto>> map = new HashMap<>();
+        List<MemberDto> memberList = memberService.memberList();
+        map.put("result", memberList);
+
+        return ResponseEntity.status(HttpStatus.OK).body(map);
+    }
 }

@@ -1,15 +1,72 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ko">
 <head>
     <meta charset="UTF-8">
-    <title>Index</title>
+    <title>메인 화면</title>
 </head>
 <body>
-<div class="index">
-    <div class="index-con">
-        <h1>index</h1>
-    </div>
-</div>
+<header>
+    <h1>나의 웹사이트</h1>
+    <button onclick="loadHome()">홈</button>
+    <button onclick="loadJoinForm()">회원가입</button>
+    <button onclick="loadMemberList()">회원목록</button>
+</header>
 
+<hr>
+
+<main id="app-content">
+    <h2>환영합니다! 메인 화면입니다.</h2>
+</main>
+
+<script>
+    const contentDiv = document.getElementById('app-content');
+
+    // 회원가입 화면으로 갈아끼우기
+    function loadJoinForm() {
+        contentDiv.innerHTML = `
+                <h2>회원 가입</h2>
+                <form id="joinForm">
+                    <label>이메일: <input type="text" name="memberEmail"></label><br>
+                    <label>비밀번호: <input type="password" name="memberPassword"></label><br>
+                    <label>이름: <input type="text" name="memberName"></label><br>
+                    <button type="button" onclick="joinMember()">가입하기</button>
+                </form>
+            `;
+    }
+
+    // 실제 가입 요청 처리
+    function joinMember() {
+        const form = document.getElementById('joinForm');
+        const formData = new FormData(form);
+
+        fetch('/api/member/join', { method: 'POST', body: formData })
+            .then(res => res.json())
+            .then(data => {
+                alert('가입 완료!');
+                loadMemberList(); // 가입 완료 후 회원 목록 화면으로 다시 갈아끼움
+            });
+    }
+
+    // 회원 목록 화면으로 갈아끼우기
+    function loadMemberList() {
+        // 1. 먼저 뼈대(테이블)를 그립니다.
+        contentDiv.innerHTML = `
+                <h2>회원 목록</h2>
+                <table border="1">
+                    <tbody id="memberTableBody"></tbody>
+                </table>
+            `;
+
+        // 2. 서버에서 데이터를 가져와서 테이블 안을 채웁니다.
+        fetch('/api/member/memberList')
+            .then(res => res.json())
+            .then(data => {
+                const tbody = document.getElementById('memberTableBody');
+                data.result.forEach(member => {
+                    tbody.innerHTML += `<tr><td>${member.memberEmail}</td><td>${member.memberName}</td></tr>`;
+                });
+            });
+    }
+</script>
 </body>
 </html>
