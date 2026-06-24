@@ -1,4 +1,4 @@
-package org.spring.controller;
+package org.spring.springdockerpj2.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.spring.springdockerpj2.dto.MemberDto;
