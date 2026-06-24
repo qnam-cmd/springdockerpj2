@@ -13,9 +13,6 @@ services:
       - SPRING_DATASOURCE_URL=jdbc:mysql://mysql:3306/backprojectdb?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC
       - SPRING_DATASOURCE_USERNAME=root
       - SPRING_DATASOURCE_PASSWORD=${SPRING_DATASOURCE_PASSWORD}
-    depends_on:
-      mysql:
-        condition: service_healthy
 
 networks:
   spring-network:
